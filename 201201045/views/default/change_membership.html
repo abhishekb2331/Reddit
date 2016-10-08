@@ -1,0 +1,47 @@
+{{extend 'layout.html'}}
+<style>
+	div.pos{
+		position:relative;
+		top:-20px;
+		left:70px;
+	}
+	div.pos2{
+		position:relative;
+		left:50px;
+	}
+</style>
+ {{if name_group!=0:}}
+ <h3 style="color:blue"> Welcome {{=name}}</h3>
+ {{pass}}
+<br />
+<br />
+ <ul class="nav nav-pills">
+	 <li>{{=A('Home Page',_href=URL('home_page'))}}</li>
+	 {{if name_group==0:}}
+	<li>{{=A('Login',_href=URL('login'))}}</li>
+	<li>{{=A('Register',_href=URL('register'))}}</li>
+	{{pass}}
+	{{if name_group.group_id==2:}}
+	<li>{{=A('View Profile',_href=URL('admin_profile',args=name_id))}}</li>
+	<li>{{=A('Add Category',_href=URL('add_category'))}}</li>
+	<li>{{=A('Remove Category',_href=URL('remove_category'))}}</li>
+	<li>{{=A('Post News',_href=URL('post_news'))}}</li>
+	<li>{{=A('Remove User',_href=URL('remove_user'))}}</li>
+	<li class="active">{{=A('Make Admin',_href=URL('change_membership'))}}</li>
+	{{elif name_group.group_id!=0 and name_group.group_id!=2:}}
+	<li>{{=A('View Profile',_href=URL('user_profile'))}}</li>
+	<li>{{=A('Post News',_href=URL('post_news'))}}</li>
+	{{pass}}
+	<li>{{=A('Search Post',_href=URL('search_post'))}}</li>
+</ul>
+{{=form.custom.begin}}
+Name :<div class="pos">{{=form.custom.widget.name}}</div>
+<div class="pos2" onclick="myFunction()">{{=form.custom.submit}}</div>
+{{=form.custom.end}}
+<script>
+		function myFunction()
+		{
+			alert("Made Admin");
+		}
+
+</script>

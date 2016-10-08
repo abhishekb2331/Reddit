@@ -1,0 +1,128 @@
+{{extend 'layout.html'}}
+<style>
+	div.pos_like{
+		position: relative;
+		left:0px;
+	}
+	div.pos_dislike{
+		position: relative;
+		left:100px;
+	}
+	div.pos_date{
+		position: relative;
+		left:0px;
+	}
+	div.pos_time{
+		position: relative;
+		left:-365px;
+	}
+	div.pos_seemore{
+		position:relative;
+		left:430px;
+	}
+	div.pos_del{
+		position:relative;
+		left:-160px;
+		top:5px;
+	}
+	div.position{
+		position:relative;
+		left:300px;
+	}
+</style>
+{{len_array=len(array)}}
+{{k=0}}
+<table>
+{{for i in xrange(page,len_array,1) : }}
+		{{if k==0 :}}
+			<h3 style="color:red">{{=array[i]['category_table'].category}}</h3>
+		{{pass}}
+		{{k+=1}}
+		{{if k > int(page)+2 : }}
+
+		{{else: }}
+		<tr>	
+			<td rowspan="5"><img width="300px" height=20%" src="{{=URL('download', args=array[i]['auth_user'].image)}}" /></td>
+			<b><td colspan="2"><h4 style='color:blue'>{{=A(array[i]['post_item'].heading,_href=URL(array[i]['post_item'].url))}}</h4></td></b>
+		</tr>
+		<tr><td colspan="3"><p style='color:grey'>{{=A(array[i]['post_item'].url,_href=URL(array[i]['post_item'].url))}}</p></td></tr>
+			<tr>
+			<td>Likes :{{=array[i]['post_item'].likes}}</td>
+			<td><div class="pos_like"> {{=A('Like',_href=URL('like_post',args=(array[i]['post_item'].id)))}} </div></td>
+			<td><div class="pos_dislike">{{=A('Dislike',_href=URL('dislike_post',args=(array[i]['post_item'].id)))}}</div> </td>
+			</tr>
+			<tr>
+				<td><div class="pos_date">Submitted on {{=array[i]['post_item'].post_date}} </div></td>
+				<td> <div class="pos_like">{{=array[i]['post_item'].post_time}}</div></td>
+				<td><div class="pos_dislike">by {{=array[i]['auth_user'].username}}</div></td>
+			</tr>
+			<tr>
+				<td>{{=A('Delete Post',_href=URL('delete_post',args=(array[i]['post_item'].id)))}}</td>
+				<td><div class="pos_like">{{=A('Edit Post',_href=URL('edit_post',args=(array[i]['post_item'].id)))}}</div></td>
+				<td><div class="pos_dislike">{{=A('Comment',_href=URL('comment_post',args=(array[i]['post_item'].id)))}}</div></td>
+			</tr>
+			<tr>
+				<td colspan="3">{{=A((('Show Comments')),_href=URL('show_comment',args=array[i]['post_item'].id),_class="btn btn-primary",title="Accept",id="link")}}
+				<div class="position" id="show_hide" style="display:none;">
+				<table>
+					{{k1=int(array[i]['post_item'].id)}}
+					{{lenk=len(comment_full[k1])}}
+					{{for g in range(0,lenk,1):}}
+					<tr>
+						<td rowspan="5"><img width="300px" height=20%" src="{{=URL('download', args=comment_full[k1][g]['auth_user'].image)}}" /></td>
+						<td colspan="2"><h4 style="color:blue">{{=comment_full[k1][g]['auth_user'].username}}</h4></td>
+					</tr>
+					<tr>
+						<td colspan="3"><h4>Comment : &nbsp; &nbsp; {{=comment_full[k1][g]['comments'].comments}}</h4></td>
+					</tr>
+					<tr>
+						<td>Commented on : {{=comment_full[k1][g]['comments'].comments_date}}</td>
+						<td>{{=comment_full[k1][g]['comments'].comments_time}}</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Likes : {{=comment_full[k1][g]['comments'].likes}}</td>
+						<td>{{=A('Like',_href=URL('like_comments',args=(comment_full[k1][g]['comments'].id)))}}</td>
+						<td>{{=A('Dislike',_href=URL('dislike_comments',args=(comment_full[k1][g]['comments'].id)))}}</td>
+					</tr>
+					<tr>
+						<td>{{=A('Delete comment',_href=URL('delete_comments',args=(comment_full[k1][g]['comments'].post_item_id)))}}</td>
+						<td>{{=A('Edit comment',_href=URL('edit_comments',args=(comment_full[k1][g]['comments'].post_item_id)))}}</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					{{pass}}
+				</table>
+			</div> 
+			</td></tr>
+
+		{{pass}}
+		{{if k ==int(page)+2 :}}
+		<tr colspan="3"><td>
+		<div class="pos_seemore">{{=A("See More",_href=URL('show_categories',args=(array[i]['category_table'].id,int(page+2))))}}</div>
+		</td></tr>
+		{{pass}}
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+{{pass}}
+</table>
+<script>
+	$('#show').toggle(function(){
+		$('#show_hide').show();
+		$(this).text('Hide Comments');
+			},function(){
+			$('#show_hide').hide();
+			$(this).text('Show Comments');
+			})
+</script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/show_hide.js"></script>
+

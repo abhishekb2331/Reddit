@@ -1,0 +1,22 @@
+{{extend 'layout.html'}}
+{{=message}}
+{{if request.env.http_referrer:}}
+{{redirect(request.env.http_referrer)}}
+{{pass}}
+{{if session.back:}}
+{{redirect_url = session.back}}
+{{else:}}
+{{redirect_url = URL()}}
+{{pass}}
+<script type="text/javascript">
+	$(window).load(function()
+			{
+		history.go(-1)
+			})
+	function Redirect()
+	{
+		history.go(-1);
+	}
+	document.write("You will be redirected to main page in 10 sec.");
+	setTimeout('Redirect()', 0);
+</script>

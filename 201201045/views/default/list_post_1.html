@@ -1,0 +1,78 @@
+{{extend 'layout.html'}}
+{{=A('Login',_href=URL('login'))}}
+{{=A('Register',_href=URL('register'))}}
+{{if name_group==2:}}
+{{=A('View Profile',_href=URL('admin_profile',args=name_id))}}
+{{=A('Add Category',_href=URL('add_category'))}}
+{{=A('Remove User',_href=URL('remove_user'))}}
+{{=A('Make Admin',_href=URL('change_membership'))}}
+{{elif name_group!=0 and name_group!=2:}}
+{{=A('View Profile',_href=URL('user_profile'))}}
+{{pass}}
+{{=A('Search Post',_href=URL('search_post'))}}
+{{k=len(array)}}
+{{for i in range(0,k,1): }}
+	<table>
+		<tr>
+			<td rowspan="5"><img width="300px" height=20%" src="{{=URL('download', args=array[i]['auth_user'].image)}}"/></td>
+			<td colspan="2"><h4 style="color:blue"><b>{{=A(array[i]['post_item'].heading,_href=URL(array[i]['post_item'].url))}}</b></h4></td>
+		</tr>
+		<tr>
+			<td colspan="3"><p style='color:grey'>{{=A(array[i]['post_item'].url,_href=URL(array[i]['post_item'].url))}}</p></td>
+		</tr>
+		<tr>
+			<td>Likes :{{=array[i]['post_item'].likes}}</td>
+			<td><div class="pos_like"> {{=A('Like',_href=URL('like_post',args=(array[i]['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}} </div></td>
+			<td><div class="pos_dislike">{{=A('Dislike',_href=URL('dislike_post',args=(array[i]['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</div> </td>
+		</tr>
+		<tr>
+			<td><div class="pos_date">Submitted on {{=array[i]['post_item'].post_date}} </div></td>
+			<td> <div class="pos_like">{{=array[i]['post_item'].post_time}}</div></td>
+			<td><div class="pos_dislike">by {{=array[i]['auth_user'].username}}</div></td>
+		</tr>
+		<tr>
+			<td>{{=A('Delete Post',_href=URL('delete_post',args=(array[i]['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</td>
+			<td><div class="pos_like">{{=A('Edit Post',_href=URL('edit_post',args=(array[i]['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</div></td>
+			 <td><div class="pos_dislike">{{=A('Comment',_href=URL('comment_post',args=(array[i]['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</div></td>
+		</tr>
+		<tr>
+			<td colspan="3" class="pos_dislike">{{=A((('Show Comments')),_href=URL('show_comment',args=array[i]['post_item'].id),_class="btn btn-primary",title="Accept",id="link")}}
+				<div class="position" id="show_hide" style="display:none;">
+					<table>
+						{{k1=int(array[i]['post_item'].id)}}
+						{{lenk=len(comment_full[k1])}}
+						{{for g in range(0,lenk,1):}}
+						<tr>
+							<td rowspan="5"><img width="300px" height=20%" src="{{=URL('download', args=comment_full[k1][g]['auth_user'].image)}}" /></td>
+							<td colspan="2"><h4 style="color:blue">{{=comment_full[k1][g]['auth_user'].username}}</h4></td>
+						</tr>
+						<tr>
+							<td colspan="3"><h4>Comment : &nbsp; &nbsp; {{=comment_full[k1][g]['comments'].comments}}</h4></td>
+						</tr>
+						<tr>
+							<td>Commented on : {{=comment_full[k1][g]['comments'].comments_date}}</td>
+							<td>{{=comment_full[k1][g]['comments'].comments_time}}</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Likes : {{=comment_full[k1][g]['comments'].likes}}</td>
+							<td>{{=A('Like',_href=URL('like_comments',args=(comment_full[k1][g]['comments'].id)),_class="btn btn-primary",title="Accept",id="link")}}</td>
+							<td>{{=A('Dislike',_href=URL('dislike_comments',args=(comment_full[k1][g]['comments'].id)),_class="btn btn-primary",title="Accept",id="link")}}</td>
+						</tr>
+						<tr>
+							<td>{{=A('Delete comment',_href=URL('delete_comments',args=(comment_full[k1][g]['comments'].post_item_id)),_class="btn btn-primary",title="Accept",id="link")}}</td>
+							<td>{{=A('Edit comment',_href=URL('edit_comments',args=(comment_full[k1][g]['comments'].post_item_id)),_class="btn btn-primary",title="Accept",id="link")}}</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						{{pass}}
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+	{{pass}}

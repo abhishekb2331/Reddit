@@ -1,0 +1,74 @@
+{{extend 'layout.html'}}
+<style>
+	div.pos{
+		left:500px;
+	}
+	div.test{
+		left:-200px;
+	}
+</style>
+<table>
+	<tr>
+		<td rowspan="5"><img width="300px" height=20%" src="{{=URL('download', args=array['auth_user'].image)}}" /></td>
+		<td colspan="2"><h4 style="color:blue"><b>{{=A(array['post_item'].heading,_href=URL(array['post_item'].url))}}</b></h4></td>
+	</tr>
+	<tr>
+		<td colspan="3"><p style='color:grey'>{{=A(array['post_item'].url,_href=URL(array['post_item'].url))}}</p></td>
+	</tr>
+	
+	<tr>
+		<td>Likes :{{=array['post_item'].likes}}</td>
+		<td><div class="pos_like"> {{=A('Like',_href=URL('like_post',args=(array['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}} </div></td>
+		<td><div class="pos_dislike">{{=A('Dislike',_href=URL('dislike_post',args=(array['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</div> </td>
+	</tr>
+	<tr>
+		<td><div class="pos_date">Submitted on {{=array['post_item'].post_date}} </div></td>
+		<td> <div class="pos_like">{{=array['post_item'].post_time}}</div></td>
+		<td><div class="pos_dislike">by {{=array['auth_user'].username}}</div></td>				
+	</tr>
+	<tr>
+		<td>{{=A('Delete Post',_href=URL('delete_post',args=(array['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</td>
+		<td><div class="pos_like">{{=A('Edit Post',_href=URL('edit_post',args=(array['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</div></td>          
+		<td><div class="pos_dislike">{{=A('Comment',_href=URL('comment_post',args=(array['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</div></td>   
+	</tr>
+	<tr>
+		<td colspan="3"><div class="pos"><button type="button" class="btn btn-primary" id="show"><div class="pos">Show Likes</div></button></div>
+		<div class="pos" id="show_hide" style="display:none;">
+			<table>
+				{{lenk=len(comment_full)}}
+				{{temp=0}}
+				{{temp1=0}}
+				{{for g in range(0,lenk,1):}}
+				{{if temp==0 and comment_full[g]['like_post'].likes ==5:}}
+				<div class="test"><h4 style="color:blue">Likes</h4></div>
+					{{temp=1}}
+				{{pass}}
+				{{if temp1==0 and comment_full[g]['like_post'].likes ==-3:}}
+				<div class="test"><h4 style="color:blue">Dislikes</h4></div>
+					{{temp1=1}}
+				{{pass}}
+				<tr>
+					<td rowspan="1"><img width="300px" height=20%" src="{{=URL('download', args=comment_full[g]['auth_user'].image)}}" /></td>
+					<td colspan="2"><h4 style="color:blue">{{=comment_full[g]['auth_user'].username}}</h4></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				{{pass}}
+			</table>
+		</div>
+	</td>
+	</tr>
+</table>
+<script>
+$('#show').toggle(function(){
+	$('#show_hide').show();
+	$(this).text('Hide Likes');
+},function(){
+$('#show_hide').hide();													         $(this).text('Show Likes');													
+	})
+</script>															
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/show_hide.js"></script>

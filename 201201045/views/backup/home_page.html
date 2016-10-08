@@ -1,0 +1,166 @@
+{{extend 'layout.html'}}
+<html>
+	<body>
+<!--{{=array}}
+{{=categories}} -->
+<style>
+	div.pos_like{
+		position: relative;
+		left:0px;
+	}
+	div.pos_dislike{
+		position: relative;
+		left:100px;
+	}
+	div.pos_date{
+		position: relative;
+		left:0px;
+	}
+	div.pos_time{
+		position: relative;
+		left:-365px;
+	}
+	div.see_more{
+		position: relative;
+		left:480px;
+	}
+	div.position{
+		position:relative;
+		left:100px;
+	}   
+	div.change{
+		position:relative;
+		left:0px;
+	}
+	div.pos_change{
+		position:relative;
+		left:0px;
+	}
+</style>
+{{len_categories=len(categories)}}
+{{ arr={} }}
+{{for i in range(0,len_categories,1):}}
+	{{arr[categories[i].category]=0}}
+{{pass}}
+{{len_array=len(array)}}
+{{for j in xrange(0,len_categories,1):}}
+<table>
+{{for i in xrange(0,len_array,1) : }}
+	{{if array[i]['category_table'].category == categories[j].category :}}
+		{{if arr[array[i]['category_table'].category]==0 :}}
+			<h3 style="color:red">{{=array[i]['category_table'].category}}</h3>
+		{{pass}}
+		{{arr[array[i]['category_table'].category]+=1}}
+		{{if arr[array[i]['category_table'].category] > 2 : }}
+
+		{{else: }}
+		<tr>
+			{{if array[i]['post_item'].pic != '' :}}
+				<td rowspan="6"><img width="300px" height="1%" src="{{=URL('download', args=array[i]['post_item'].pic)}}" /></td>
+				<td><img width="90px" height="100" src="{{=URL('download', args=array[i]['auth_user'].image)}}" /></td>
+				<td><b><h4 style='color:blue'>{{=array[i]['post_item'].heading}}</h4></b></td>
+			{{else:}}
+			<td rowspan="6"><img width="240px" height="200" src="{{=URL(r=request,c='static/images',f='no_image.jpg')}}"/></td>
+				<td><img width="90px" height="100" src="{{=URL('download', args=array[i]['auth_user'].image)}}" /></td>
+				<td><b><h4 style='color:blue'>{{=array[i]['post_item'].heading}}</h4></b></td>
+			{{pass}}
+		</tr>
+			<tr><td colspan="3"><p style='color:grey'>{{=A(array[i]['post_item'].url,_href=URL(array[i]['post_item'].url))}}</p></td></tr>
+			<tr>
+				<td>Likes :{{=array[i]['post_item'].likes}}</td>
+				<td><div class="pos_like"> {{=A('Like',_href=URL('like_post',args=(array[i]['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}} </div></td>
+				<td><div class="pos_dislike">{{=A('Dislike',_href=URL('dislike_post',args=(array[i]['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</div></td></tr>
+			<tr>
+			<td><div class="pos_date">Submitted on {{=array[i]['post_item'].post_date}} </div></td>
+			<td> <div class="pos_like">{{=array[i]['post_item'].post_time}}</div></td>
+			<td><div class="pos_dislike">by {{=array[i]['auth_user'].username}}</div></td>
+			</tr>
+			<tr>
+				<td>{{=A('Delete Post',_href=URL('delete_post',args=(array[i]['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</td>
+				<td><div class="pos_like">{{=A('Edit Post',_href=URL('edit_post',args=(array[i]['post_item'].id)),_class="btn btn-primary",title="Accept",id="link")}}</div></td>
+				<td><div class="pos_dislike">{{=A('Comment',_href=URL('comment_post',args=(array[i]['post_item'].    id)),_class="btn btn-primary",title="Accept",id="link")}}</div></td>
+				</div></td>
+			</tr>
+			<tr>
+				<td colspan="1" class="pos_dislike"><div class="change">{{=A((('Show Comments')),_href=URL('show_comment',args=array[i]['post_item'].id),_class="btn btn-primary",title="Accept",id="link")}}</div></td>
+				<td colspan="1" class="pos_dislike"><div class="pos_change">{{=A((('Show Likes')),_href=URL('show_likes',args=array[i]['post_item'].id),_class="btn btn-primary",title="Accept",id="link")}}</div>
+				</td>
+				<td></td>
+			</td></tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		{{pass}}
+		{{if arr[array[i]['category_table'].category] ==2 :}}
+		<tr colspan="4"><td>
+			<div class="see_more">{{=A("See More",_href=URL('show_categories',args=(categories[j].id,0)),_class="btn btn-primary",title="Accept",id="link")}}</div>
+		</td></tr>
+		{{pass}}
+		
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	{{pass}}
+{{pass}}
+</table>
+{{pass}}
+<script>
+	$('#show').toggle(function(){
+		$('#show_hide').show();
+		$(this).text('Hide Comments');
+			},function(){
+			$('#show_hide').hide();
+			$(this).text('Show Comments');
+			})
+</script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/show_hide.js"></script>
+</body>
+</html>
